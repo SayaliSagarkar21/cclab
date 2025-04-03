@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h1 class="display-5">Welcome, {{ name }}!</h1>
+                <p class="lead">Check the weather for any city around the world.</p>
+                <hr>
+                <div class="d-grid gap-2 d-md-flex">
+                    <a href="{{ url_for('weather.get_weather') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-cloud-sun me-2"></i> Check Weather
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Recent Searches</h5>
+            </div>
+            <div class="card-body">
+                {% if recent_searches %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>City</th>
+                                <th>Temperature</th>
+                                <th>Description</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for search in recent_searches %}
+                            <tr>
+                                <td>{{ search.city }}</td>
+                                <td>{{ search.temperature }}°C</td>
+                                <td>{{ search.description }}</td>
+                                <td>{{ search.search_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>
+                                    <form action="{{ url_for('weather.get_weather') }}" method="post">
+                                        <input type="hidden" name="city" value="{{ search.city }}">
+                                        <button type="submit" class="btn btn-sm btn-info">
+                                            <i class="fas fa-sync-alt"></i> Update
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-center">No recent searches found. Try checking the weather for a city!</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Check Weather</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('weather.get_weather') }}">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Enter city name" name="city" value="{{ city }}" required>
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search me-2"></i> Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if weather %}
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card weather-card">
+            <div class="card-body text-center">
+                <h2 class="city-name">{{ weather.name }}, {{ weather.sys.country }}</h2>
+                <div class="weather-icon">
+                    <img src="https://openweathermap.org/img/wn/{{ weather.weather[0].icon }}@2x.png" alt="{{ weather.weather[0].description }}">
+                </div>
+                <div class="temperature display-4">{{ weather.main.temp | round(1) }}°C</div>
+                <div class="weather-description">{{ weather.weather[0].description | title }}</div>
+                
+                <div class="details mt-4">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="detail-item">
+                                <div class="detail-label">Feels Like</div>
+                                <div class="detail-value">{{ weather.main.feels_like | round(1) }}°C</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="detail-item">
+                                <div class="detail-label">Humidity</div>
+                                <div class="detail-value">{{ weather.main.humidity }}%</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="detail-item">
+                                <div class="detail-label">Wind</div>
+                                <div class="detail-value">{{ (weather.wind.speed * 3.6) | round(1) }} km/h</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="detail-item">
+                                <div class="detail-label">Pressure</div>
+                                <div class="detail-value">{{ weather.main.pressure }} hPa</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="detail-item">
+                                <div class="detail-label">Visibility</div>
+                                <div class="detail-value">{{ (weather.visibility / 1000) | round(1) }} km</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <a href="{{ url_for('weather.dashboard') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
