@@ -1,0 +1,6 @@
+{
+    "env": {
+      "NIXPACKS_PKGS": "gcc postgresql_16 python39"
+    }
+  }
+  
